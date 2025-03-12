@@ -31,16 +31,16 @@ def analyze_text_for_scam(text):
         model_name="typhoon-v2-70b-instruct",
     )
     template = """
-        วิเคราะห์ข้อความต่อไปนี้เพื่อหาสัญญาณที่อาจเป็นการหลอกลวง:
+        วิเคราะห์ข้อความต่อไปนี้เพื่อหาสัญญาณที่อาจเป็นการหลอกลวง :
         {text}
 
         กรุณาระบุ:
-        1. คำวลีหรือรูปแบบที่น่าสงสัย
+        1. คำ ประโยค วลีหรือรูปแบบของข้อความที่น่าสงสัย
         2. ระดับความเสี่ยง (ต่ำ/กลาง/สูง)
         3. ประเภทของการหลอกลวงที่อาจเกิดขึ้น (ถ้ามี)
         4. เหตุผลสำหรับการประเมิน
 
-        การตอบกลับ:
+        การตอบกลับ :
     """
     
     prompt = PromptTemplate(
@@ -74,14 +74,14 @@ def main():
             transcribed_text = speech_to_text(tmp_file_path)
             
             if transcribed_text:
-                st.subheader("ข้อความจากการโทร :")
+                st.subheader("ข้อความจากการโทร : ")
                 st.write(transcribed_text)
                 status_text.text("Analyzing for potential scams...")
                 progress_bar.progress(60)
                 analysis_result = analyze_text_for_scam(transcribed_text)
                 progress_bar.progress(100)
                 status_text.text("Analysis complete!") 
-                st.subheader("Scam Analysis Result:")
+                st.subheader("Scam Analysis Result : ")
                 st.markdown(analysis_result)
                 
         except Exception as e:

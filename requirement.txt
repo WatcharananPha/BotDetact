@@ -1,0 +1,5 @@
+streamlit
+langchain_openai
+openai
+azure-cognitiveservices-speech
+tempfile
