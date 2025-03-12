@@ -35,7 +35,7 @@ def analyze_text_for_scam(text):
         {text}
 
         กรุณาระบุ:
-        1. วลีหรือรูปแบบที่น่าสงสัย
+        1. คำวลีหรือรูปแบบที่น่าสงสัย
         2. ระดับความเสี่ยง (ต่ำ/กลาง/สูง)
         3. ประเภทของการหลอกลวงที่อาจเกิดขึ้น (ถ้ามี)
         4. เหตุผลสำหรับการประเมิน
@@ -54,8 +54,8 @@ def analyze_text_for_scam(text):
     return response.content
 
 def main():
-    st.title("🎤 Thai Audio Scam Detector")
-    st.write("Upload an audio file to detect potential scams in Thai language")
+    st.title("CareCenter scam detection")
+    st.write("Upload an audio file to detect potential scams")
     
     uploaded_file = st.file_uploader("Choose an audio file", type=['wav', 'm4a', 'mp3'])
     
@@ -74,7 +74,7 @@ def main():
             transcribed_text = speech_to_text(tmp_file_path)
             
             if transcribed_text:
-                st.subheader("Transcribed Text:")
+                st.subheader("ข้อความจากการโทร :")
                 st.write(transcribed_text)
                 status_text.text("Analyzing for potential scams...")
                 progress_bar.progress(60)
