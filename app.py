@@ -15,14 +15,49 @@ def speech_to_text(audio_file):
     subscription_key = "FKnTVDn6dNgyjJ5JtuSHKUylfwCFT5NOLIHTuIvABp7HDgia5PmFJQQJ99BCACYeBjFXJ3w3AAAAACOG8KSL"
     region = "eastus"
     speech_config = speechsdk.SpeechConfig(subscription=subscription_key, region=region)
-    speech_config.speech_recognition_language = "th-TH" 
+    speech_config.speech_recognition_language = "th-TH"
+    
+    # Set maximum duration to 5 minutes (300 seconds)
+    MAX_DURATION = 300  # 5 minutes in seconds
+    done = False
+    all_text = []
+
+    def handle_result(evt):
+        if evt.result.text:
+            all_text.append(evt.result.text)
+
+    def stop_cb(evt):
+        nonlocal done
+        done = True
+
+    def canceled_cb(evt):
+        nonlocal done
+        done = True
+
     audio_config = speechsdk.audio.AudioConfig(filename=audio_file)
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
-    result = speech_recognizer.recognize_once()
-    if result.reason == speechsdk.ResultReason.RecognizedSpeech:
-        return result.text
+
+    # Connect callbacks
+    speech_recognizer.recognized.connect(handle_result)
+    speech_recognizer.session_stopped.connect(stop_cb)
+    speech_recognizer.canceled.connect(canceled_cb)
+
+    # Start continuous recognition with timeout
+    speech_recognizer.start_continuous_recognition()
+    
+    import time
+    start_time = time.time()
+    
+    while not done and (time.time() - start_time) < MAX_DURATION:
+        time.sleep(0.5)
+    
+    speech_recognizer.stop_continuous_recognition()
+    
+    final_text = " ".join(all_text)
+    if final_text:
+        return final_text
     else:
-        return "Speech recognition failed"
+        return "Speech recognition failed or no speech detected"
 
 def analyze_text_for_scam(text):
     llm = ChatOpenAI(
@@ -56,14 +91,12 @@ def analyze_text_for_scam(text):
 def main():
     st.title("CareCenter scam detection")
     st.write("Upload an audio file to detect potential scams")
-    
     uploaded_file = st.file_uploader("Choose an audio file", type=['wav', 'm4a', 'mp3'])
     
     if uploaded_file is not None:
         st.audio(uploaded_file)
         progress_bar = st.progress(0)
         status_text = st.empty()
-        
         with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(uploaded_file.name)[1]) as tmp_file:
             tmp_file.write(uploaded_file.getvalue())
             tmp_file_path = tmp_file.name
@@ -81,7 +114,7 @@ def main():
                 analysis_result = analyze_text_for_scam(transcribed_text)
                 progress_bar.progress(100)
                 status_text.text("Analysis complete!") 
-                st.subheader("Scam Analysis Result : ")
+                st.subheader("Scam Analysis Result: ")
                 st.markdown(analysis_result)
                 
         except Exception as e:
