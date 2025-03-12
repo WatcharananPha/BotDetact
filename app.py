@@ -55,7 +55,7 @@ def speech_to_text(audio_file):
     message_placeholder = st.empty()
     for i in range(len(final_text)):
         message_placeholder.markdown(final_text[:i+1])
-        time.sleep(0.02)
+        time.sleep(1.0)
     
     return final_text
 
