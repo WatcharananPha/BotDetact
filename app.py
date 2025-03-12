@@ -108,11 +108,11 @@ def main():
             transcribed_text = speech_to_text(tmp_file_path)
             
             if transcribed_text:
-                status_text.text("Analyzing for potential scams...")
+                status_text.text("Anomaly Founded!")
                 progress_bar.progress(60)
                 analysis_result = analyze_text_for_scam(transcribed_text)
                 progress_bar.progress(100)
-                status_text.text("Anomaly Founded!") 
+                status_text.text("Wait for Analysis Result.. ") 
                 st.subheader("Scam Analysis Result: ")
                 st.markdown(analysis_result)
                 
