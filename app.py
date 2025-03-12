@@ -112,7 +112,7 @@ def main():
                 progress_bar.progress(60)
                 analysis_result = analyze_text_for_scam(transcribed_text)
                 progress_bar.progress(100)
-                status_text.text("Analysis complete!") 
+                status_text.text("Anomaly Founded!") 
                 st.subheader("Scam Analysis Result: ")
                 st.markdown(analysis_result)
                 
