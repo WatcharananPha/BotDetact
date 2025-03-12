@@ -3,6 +3,7 @@ import azure.cognitiveservices.speech as speechsdk
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 import os
+import time
 import tempfile
 
 st.set_page_config(
@@ -16,9 +17,7 @@ def speech_to_text(audio_file):
     region = "eastus"
     speech_config = speechsdk.SpeechConfig(subscription=subscription_key, region=region)
     speech_config.speech_recognition_language = "th-TH"
-    
-    # Set maximum duration to 5 minutes (300 seconds)
-    MAX_DURATION = 300  # 5 minutes in seconds
+    MAX_DURATION = 300
     done = False
     all_text = []
 
@@ -36,16 +35,11 @@ def speech_to_text(audio_file):
 
     audio_config = speechsdk.audio.AudioConfig(filename=audio_file)
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
-
-    # Connect callbacks
     speech_recognizer.recognized.connect(handle_result)
     speech_recognizer.session_stopped.connect(stop_cb)
     speech_recognizer.canceled.connect(canceled_cb)
-
-    # Start continuous recognition with timeout
     speech_recognizer.start_continuous_recognition()
     
-    import time
     start_time = time.time()
     
     while not done and (time.time() - start_time) < MAX_DURATION:
@@ -54,10 +48,16 @@ def speech_to_text(audio_file):
     speech_recognizer.stop_continuous_recognition()
     
     final_text = " ".join(all_text)
-    if final_text:
-        return final_text
-    else:
+    if not final_text:
         return "Speech recognition failed or no speech detected"
+
+    # Display transcribed text with animation
+    message_placeholder = st.empty()
+    for i in range(len(final_text)):
+        message_placeholder.markdown(final_text[:i+1])
+        time.sleep(0.02)
+    
+    return final_text
 
 def analyze_text_for_scam(text):
     llm = ChatOpenAI(
@@ -108,8 +108,6 @@ def main():
             transcribed_text = speech_to_text(tmp_file_path)
             
             if transcribed_text:
-                st.subheader("ข้อความจากการโทร : ")
-                st.write(transcribed_text)
                 status_text.text("Analyzing for potential scams...")
                 progress_bar.progress(60)
                 analysis_result = analyze_text_for_scam(transcribed_text)
