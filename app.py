@@ -112,7 +112,7 @@ def main():
             tmp_file_path = tmp_file.name
 
         try:
-            status_text.text("Transcribing audio...")
+            status_text.text("Transcription  audio...")
             progress_bar.progress(30)
             transcribed_text = speech_to_text(tmp_file_path)
             
