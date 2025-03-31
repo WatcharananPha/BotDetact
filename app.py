@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 def speech_to_text(audio_file):
-    subscription_key = "FKnTVDn6dNgyjJ5JtuSHKUylfwCFT5NOLIHTuIvABp7HDgia5PmFJQQJ99BCACYeBjFXJ3w3AAAAACOG8KSL"
+    subscription_key = "AZURE-SPEECH-KEY"
     region = "eastus"
     speech_config = speechsdk.SpeechConfig(subscription=subscription_key, region=region)
     speech_config.speech_recognition_language = "th-TH"
@@ -182,7 +182,7 @@ def main():
         )
         
         llm = ChatOpenAI(
-            openai_api_key="sk-GqA4Uj6iZXaykbOzIlFGtmdJr6VqiX94NhhjPZaf81kylRzh",
+            openai_api_key="TYPHOON-API-KEY",
             openai_api_base="https://api.opentyphoon.ai/v1",
             model_name="typhoon-v2-70b-instruct",
         )
