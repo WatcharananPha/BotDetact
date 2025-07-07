@@ -7,13 +7,13 @@ import time
 import tempfile
 
 st.set_page_config(
-    page_title="CareCenter",
-    page_icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzDlRoVrd80cb1RgMTedi7zXqX3zKbZyshfw&s",
+    page_title="secall",
+    page_icon="https://younghappyplus.com/storage/teacher-profile/5HUwhUQtRZe0nNt3zAUH84SIpEJ9WY-metaWUgrIGxvZ28tMDMucG5n-.png",
     layout="centered"
 )
 
 def speech_to_text(audio_file):
-    subscription_key = "AZURE-SPEECH-KEY"
+    subscription_key = "BzGprYVVhd88q1YupHcWmfQSvnoFgLjUVdEf8x2jffMDRyhZUMd4JQQJ99BGACYeBjFXJ3w3AAAAACOGPg2E"
     region = "eastus"
     speech_config = speechsdk.SpeechConfig(subscription=subscription_key, region=region)
     speech_config.speech_recognition_language = "th-TH"
@@ -91,8 +91,8 @@ def main():
     st.markdown(
         """
         <div style="text-align: center;">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzDlRoVrd80cb1RgMTedi7zXqX3zKbZyshfw&s" width="100">
-            <h1>CareCenter Scam Detection</h1>
+            <img src="https://younghappyplus.com/storage/teacher-profile/5HUwhUQtRZe0nNt3zAUH84SIpEJ9WY-metaWUgrIGxvZ28tMDMucG5n-.png" width="100">
+            <h1>SeCall Scam Detection</h1>
         </div>
         """,
         unsafe_allow_html=True
