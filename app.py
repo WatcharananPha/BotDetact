@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 def speech_to_text(audio_file):
-    subscription_key = "BzGprYVVhd88q1YupHcWmfQSvnoFgLjUVdEf8x2jffMDRyhZUMd4JQQJ99BGACYeBjFXJ3w3AAAAACOGPg2E"
+    subscription_key = ""
     region = "eastus"
     speech_config = speechsdk.SpeechConfig(subscription=subscription_key, region=region)
     speech_config.speech_recognition_language = "th-TH"
